@@ -1,0 +1,62 @@
+{% load static %}
+
+<div class="form my-3">
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control bg-transparent badge-pill border-secondary px-3 py-1" type="text" placeholder="search people">
+        </div>
+        <button class="d-none" type="submit"></button>
+    </form>
+</div>
+<div class="my-2" id="status">
+    <h5 class="border-bottom border-secondary pb-3 mb-3">Status</h5>
+    <div class="my-2 d-flex">
+        <button class="py-1 btn btn-outline-dark badge-pill">B</button>
+        <button class="py-1 btn btn-outline-warning badge-pill mx-1">A</button>
+        <button class="py-1 btn btn-success badge-pill flex-fill">Active</button>
+    </div>
+</div>
+<div class="mt-5" id="status">
+    <h5 class="border-bottom border-secondary pb-3 mb-3">Following</h5>
+    <div class="my-2 d-flex">
+        <div class="f-p-photo dp-sm rounded-circle">
+            <img class="h-100" src="{% static 'img/person1.jpg' %}" alt="dpic">
+        </div>
+        <p class="mb-0 d-flex align-self-center pl-2">IreriVikki</p>
+        <label class="btn btn-success badge-pill px-2 py-0 mb-0 d-flex align-self-center ml-auto">A</label>
+    </div>
+    <div class="my-2 d-flex">
+        <div class="f-p-photo dp-sm rounded-circlex">
+            <img class="h-100" src="{% static 'img/person2.jpg' %}" alt="dpic">
+        </div>
+        <p class="mb-0 d-flex align-self-center pl-2">Cheruiyot</p>
+        <label class="btn btn-success badge-pill px-2 py-0 mb-0 d-flex align-self-center ml-auto">A</label>
+    </div>
+    <div class="my-2 d-flex">
+        <div class="f-p-photo dp-sm rounded-circle">
+            <img class="h-100" src="{% static 'img/person3.jpg' %}" alt="dpic">
+        </div>
+        <p class="mb-0 d-flex align-self-center pl-2">2Mashaa</p>
+        <label class="btn btn-success badge-pill px-2 py-0 mb-0 d-flex align-self-center ml-auto">A</label>
+    </div>
+    <div class="my-2 d-flex">
+        <div class="f-p-photo dp-sm rounded-circle">
+            <img class="h-100" src="{% static 'img/person4.jpg' %}" alt="dpic">
+        </div>
+        <p class="mb-0 d-flex align-self-center pl-2">Pattomas</p>
+        <label class="btn btn-success badge-pill px-2 py-0 mb-0 d-flex align-self-center ml-auto">A</label>
+    </div>
+</div>
+<div class="mt-5" id="status">
+    <h5 class="border-bottom border-secondary pb-3 mb-3">Leaderboard</h5>
+    {% for leader in leaders|slice:":3" %}
+    <div class="my-2 d-flex">
+        <div class="f-p-photo dp-sm rounded-circle">
+            <img class="h-100" src="{{ leader.d_pic.url }}" alt="dpic">
+        </div>
+        <p class="mb-0 d-flex align-self-center pl-2">{{ leader.user_name }}</p>
+        <label class="btn btn-light px-2 py-0 mb-0 d-flex align-self-center ml-auto">{{ leader.coins }}</label>
+    </div>
+    {% endfor %}
+</div>

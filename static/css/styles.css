@@ -1,0 +1,40 @@
+body {
+    background-color: #4f4f4f
+}
+
+.icon-16 {
+    width: 16px;
+    height: auto;
+}
+
+.icon-24 {
+    width: 24px;
+    height: auto;
+}
+
+.dp-sm {
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+}
+
+.bg-grey {
+    background-color: rgba(255, 251, 251, 0.823);
+}
+
+
+.border-grey {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.51);
+}
+
+.bg-white-50 {
+    background-color: rgba(255, 251, 251, 0.489)
+}
+
+.bg-yellow {
+    background-color: #fff3a7;
+}
+
+.bg-brown {
+    background-color: #b36530;
+}

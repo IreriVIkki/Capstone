@@ -25,8 +25,6 @@ SECRET_KEY = 'v-3)scuj1iyt05e8yg4f&)frf$_u91s(i*2n@m4c__-%(b73&-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -71,19 +69,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'MoriSpace.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': 'space',
-#         'USER': 'vikki',
-#         'PASSWORD': 'sasawa',
-#     }
-# }
 
 
 # Password validation
@@ -135,11 +120,6 @@ STATICFILES_DIRS = [
 
 # ***************************************************
 DISABLE_COLLECTSTATIC = config('DISABLE_COLLECTSTATIC')
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 django_heroku.settings(locals())
 
