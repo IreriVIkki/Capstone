@@ -216,6 +216,7 @@ class UpdateItemsView(MoriSpaceView):
 
     # override form class to pass the required form for this function to work and the destination url as well
     form_class = ChecklistForm
+    # use a partial template to render the updated information
     target_url = 'includes/test_partial.html'
 
     def post(self, request, *args, **kwargs):
