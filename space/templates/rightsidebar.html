@@ -31,67 +31,8 @@
                     <img class="w-100" src="{% static 'img/add.png' %}" alt="">
                 </div>
             </div>
-            <div class="bg-transparent">
-                <div class="card-header d-flex align-items-center bg-light">
-                    <p class="mb-0">Capstone Project</p>
-                </div>
-                <div class="p-1 pl-4">
-                    <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            Create authentication system
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            Create all models required
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            Add a readme to the project
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value="" id="defaultCheck1">
-                        <label class="form-check-label" for="defaultCheck1">
-                            Deploy to heroku
-                        </label>
-                    </div>
-                </div>
-                <div class="bg-transparent">
-                    <div class="card-header d-flex align-items-center bg-light">
-                        <p class="mb-0">Neighborhood Watch IP</p>
-                    </div>
-                    <div class="p-1 pl-4">
-                        <div class="form-check">
-                            <input class="form-check-input " type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                Create authentication system
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input " type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                Create all models required
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input " type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                Add a readme to the project
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input " type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
-                                Deploy to heroku
-                            </label>
-                        </div>
-                    </div>
-                </div>
+            <div class="js_update_task">
+                {% include 'includes/tasks_partial.html' %}
             </div>
         </div>
     </div>

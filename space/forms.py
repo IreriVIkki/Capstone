@@ -3,6 +3,11 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import *
+import random
+import string
+
+csrf = ''.join(random.choices(string.ascii_lowercase +
+                              string.ascii_uppercase + string.digits, k=64))
 
 
 class MyRegistrationForm(UserCreationForm):
@@ -47,19 +52,24 @@ class QuestionForm(forms.ModelForm):
                    'answered', 'duplicate', 'upvotes', 'downvotes']
 
 
-class CheckStatusForm(forms.ModelForm):
+class ChecklistForm(forms.ModelForm):
+
+    task_id = forms.CharField()
 
     class Meta:
-        model = CheckStatus
-        exclude = ['label']
+        model = Checklist
+        exclude = ['task']
         widgets = {
             'status': forms.CheckboxInput(
                 attrs={'onclick': 'this.form.submit();'}),
         }
 
 
-class ChecklistForm(forms.ModelForm):
+class AnswerForm(forms.ModelForm):
+
+    query_id = forms.CharField()
 
     class Meta:
-        model = Checklist
-        exclude = ['task']
+        model = Answer
+        exclude = ['author', 'date_answered', 'views',
+                   'question', 'verified', 'upvotes', 'downvotes']

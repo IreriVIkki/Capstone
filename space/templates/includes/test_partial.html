@@ -1,0 +1,9 @@
+<h1>results</h1>
+{% for task in tasks %}
+{{ task.task }}
+<div>
+    {% for item in items %}
+    <label class="form-control" for="">{{ item.item }}</label>
+    {% endfor %}
+</div>
+{% endfor %}

@@ -93,6 +93,10 @@ class Question(models.Model):
     def all_questions(cls):
         return cls.objects.all()
 
+    @classmethod
+    def get_question(cls, id):
+        return cls.objects.get(pk=id)
+
     @property
     def votes(self):
         return self.upvotes - self.downvotes
@@ -113,6 +117,12 @@ class Answer(models.Model):
     downvotes = models.IntegerField(default=0, null=True)
     views = models.IntegerField(default=0, null=True)
 
+    def save_answer(self, query_id, author):
+        question = Question.get_question(query_id)
+        self.author = author
+        self.question = question
+        self.save()
+
     @property
     def votes(self):
         return self.upvotes - self.downvotes
@@ -122,19 +132,47 @@ class Answer(models.Model):
 
 
 class Task(models.Model):
-    task = models.CharField(max_length=20, null=True)
+    user = models.ForeignKey(
+        User, null=True, on_delete=models.CASCADE, related_name='tasks')
+    task = models.CharField(max_length=50, null=True)
+
+    @classmethod
+    def get_task(cls, id):
+        return cls.objects.get(pk=id)
+
+    @classmethod
+    def all_tasks(cls):
+        return cls.objects.all()
 
 
 class Checklist(models.Model):
     task = models.ForeignKey(
-        Task, on_delete=models.CASCADE, null=True, related_name='tasks')
+        Task, on_delete=models.CASCADE, null=True, related_name='items')
+    status = models.BooleanField(default=False)
     item = models.CharField(max_length=100, null=True)
 
+    class Meta:
+        ordering = ['status']
 
-class CheckStatus(models.Model):
-    status = models.BooleanField(default=False)
-    label = models.OneToOneField(
-        Checklist, null=True, on_delete=models.CASCADE, related_name='label')
+    def save_item(self, task_id):
+        task = Task.get_task(task_id)
+        self.task = task
+        self.save()
+
+    def complete_item(self):
+        self.status = True
+        self.save()
+
+    @classmethod
+    def all_items(cls):
+        return cls.objects.all()[::-1]
+
+    @classmethod
+    def get_item(cls, id):
+        return cls.objects.get(pk=id)
+
+    def __str__(self):
+        return self.item
 
 
 class Announcement(models.Model):

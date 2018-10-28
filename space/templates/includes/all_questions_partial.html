@@ -7,65 +7,79 @@
     <div class="card-body row mx-0">
         <div class="col-md-1">
             <img class="mx-auto" width="30" height="auto" src="{% static 'img/angleup.png' %}" alt="up">
-            <p class="text-center mb-0 mx-auto">23</p>
+            <p class="text-center mb-0 mx-auto">{{ question.votes }}</p>
             <img class="mx-auto" width="30" height="auto" class="" src="{% static 'img/angledown.png' %}" alt="dn">
         </div>
         <div class="col-md-11">
             <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem ducimus voluptatum
-                totam doloremque atque vel, beatae itaque iusto magnam aperiam odit ea non in, ratione
-                sequi animi fuga praesentium quibusdam ad consectetur recusandae repellat facere.
-                Explicabo
-                laudantium mollitia modi beatae expedita sunt unde quibusdam voluptas nulla neque
-                porro,
-                quas iste corrupti iusto repudiandae praesentium animi laboriosam cum.
-                <div class="card-img">
+                <span>{{ question.question }}</span>
+                <!-- <div class="card-img">
                     <img class="w-100" src="{% static 'img/error1.png' %}" alt="">
-                </div>
+                </div> -->
             </p>
             <div class="float-right bg-primary p-1 border-secondary rounded">
-                <p class="mb-0">Asked Oct, 23 2018</p>
+                <p class="mb-0">
+                    Asked {{ question.date_asked | date:"M, d Y"}}</p>
                 <div class="my-1 d-flex">
                     <div class="f-p-photo dp-sm rounded-circle">
                         <img class="h-100" src="{% static 'img/person1.jpg' %}" alt="dpic">
                     </div>
-                    <p class="mb-0 d-flex align-self-center pl-2">IreriVikki</p>
+                    <p class="mb-0 d-flex align-self-center pl-2">
+                        {{ question.author.profile.user_name }}</p>
                 </div>
             </div>
         </div>
     </div>
+    {% if uestion.answers.all is None %}
+    <h5>Be the first to answer</h5>
+    {% else %}
     <div class="border-bottom px-4">
         <h5>Answers</h5>
     </div>
+    {% for answer in question.answers.all %}
+    <span class="pr-3">{{ question.answers.all.count }}</span>
+    <span>Answers</span>
     <div class="card-body row mx-0 answers border-bottom py-2 mb-3">
         <div class="col-md-1">
             <img class="mx-auto" width="30" height="auto" src="{% static 'img/angleup.png' %}" alt="up">
-            <p class="text-center mb-0 mx-auto">23</p>
+            <p class="text-center mb-0 mx-auto">{{ answer.votes }}</p>
             <img class="mx-auto" width="30" height="auto" class="" src="{% static 'img/angledown.png' %}" alt="dn">
         </div>
         <div class="col-md-10">
             <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit. Voluptatem ducimus voluptatum
-                totam doloremque atque vel, beatae itaque iusto magnam aperiam odit ea non in, ratione
-                sequi animi fuga praesentium quibusdam ad consectetur recusandae repellat facere.
+                {{ answer.answer }}
             </p>
             <div class="float-right bg-light p-2 border-secondary rounded">
-                <p class="mb-0">answerd Oct, 24 2018</p>
+                <p class="mb-0">
+                    <span>Answered</span>
+                    <span>{{ answer.date_answered | date:"M, d Y"}}</span>
+                </p>
                 <div class="my-1 d-flex">
                     <div class="f-p-photo dp-sm rounded-circle">
-                        <img class="h-100" src="{% static 'img/person2.jpg' %}" alt="dpic">
+                        <img class="h-100" src="{{ answer.author.profile.d_pic.url }}" alt="dpic">
                     </div>
-                    <p class="mb-0 d-flex align-self-center pl-2">inneficient</p>
+                    <p class="mb-0 d-flex align-self-center pl-2">
+                        <span>{{ answer.author.profile.user_name }}</span>
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+    {% endfor %}
+    {% endif %}
     <div>
         <div class="card-header">
             <h5 class="text-dark alitce ">Add an answer</h5>
         </div>
         <div class="card-body p-0 form-group">
-            <textarea class="form-control border-0 mb-0 w-100" name="" id="" rows="5"></textarea>
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="form-group p-2">
+                    <input type="hidden" name="query_id" value="{{ question.id }}">
+                    <textarea class="form-control w-100" name="answer" rows="5" required id="id_answer"></textarea>
+                    <button class="btn btn-info btn-sm float-right my-2" type="submit">Submit Answer</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

@@ -1,0 +1,23 @@
+{% for task in tasks %}
+
+<div class="bg-transparent">
+    <div>
+        <div class="card-header d-flex align-items-center bg-light">
+            <p class="mb-0">{{ task.task }}</p>
+        </div>
+        <div>
+            <form action="{% url 'home' %}" method="POST" id="js-new-task">
+                <div class="d-flex px-4 py-1 mb-0">
+                    <input class="form-control py-0 mb-0" type="text" name="item" maxlength="100" required id="id_item"
+                        placeholder="add items to todo" />
+                    <input value="{{ task.id }}" type="hidden" name="task_id">
+                    <button class="btn btn-sm btn-success font-weight-bold ml-1" type="submit">+</button>
+                </div>
+            </form>
+        </div>
+        <div class="js_update_items">
+            {% include 'includes/items_partial.html' %}
+        </div>
+    </div>
+</div>
+{% endfor %}

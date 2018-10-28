@@ -15,7 +15,6 @@
                 </div>
                 <div class="card-body p-0 form-group bg-light">
                     <form class="p-2" action="{% url 'home' %}" method="POST" id="js-new-question">
-                        {% csrf_token %}
                         <div>
                             <input class="form-control js-add-query-title" type="text" name="title" maxlength="140"
                                 required id="id_title" placeholder="Question Title" />

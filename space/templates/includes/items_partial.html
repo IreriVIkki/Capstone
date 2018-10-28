@@ -1,0 +1,24 @@
+{% for item in task.items.all %}
+{% if item.status is False %}
+<div class="p-1 pl-4">
+    <form action="{% url 'home' %}" method="POST" id="js-new-item">
+        <div class="form-check">
+            <input onclick="$('#js-new-item').submit();" type="checkbox" name="status" id="item{{ item.id }}" class="form-check-input" />
+            <label for="item{{ item.id }}" class="form-check-label">
+                {{ item.item }}
+            </label>
+            <input value="{{ item.id }}" type="text" name="task_id" hidden id="id_task_id" required="false" />
+        </div>
+    </form>
+</div>
+{% endif %}
+{% endfor %}
+
+<div class="border-top mx-3">
+    <p class="font-weight-bold mb-0 py-1">Completed</p>
+    {% for item in task.items.all %}
+    {% if item.status is True %}
+    <p class="mb-0 p-1 pl-2 text-muted">{{ item.item }}</p>
+    {% endif %}
+    {% endfor %}
+</div>

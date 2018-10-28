@@ -13,6 +13,8 @@ urlpatterns = [
     # url(r'^new/question/$', views.new_question, name='new_question'),
     url(r'^edit/profile/$', views.edit_profile, name='edit_profile'),
     # url(r'^rate/post/(\d+)$', views.rate_website, name='rate_website'),
+    url(r'about/$', views.MoriSpaceView.as_view()),
+    url(r'test_partial/$', views.UpdateItemsView.as_view()),
 ]
 
 # this will help to serve uploaded images on the development server

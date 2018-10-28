@@ -1,20 +1,30 @@
 $(document).ready(function () {
-    $('#js-new-question').submit(function (e) {
-        e.preventDefault();
-        var form = $(this);
-        var html_update = String()
+    var $myForm = $('.my-ajax-form')
+    $myForm.submit(function (event) {
+        event.preventDefault()
+        var $formData = $(this).serialize()
+        var $thisURL = $myForm.attr('data-url') || window.location.href
+        console.log($thisURL)
         $.ajax({
-            type: form.attr('method'),
-            url: form.attr('action'),
-            dataType: 'text',
-            data: form.serialize(),
-            success: function (data) {
-                data = JSON.parse(data)
-                if (data.form_is_valid) {
-                    $('.js_update_questions').html(data.home_update);
-                }
-            }
-        });
-    });
-    return false;
-});
+            method: "POST",
+            url: $thisURL,
+            data: $formData,
+            success: handleFormSuccess,
+            error: handleFormError,
+        })
+    })
+
+    function handleFormSuccess(info, textStatus, jqXHR) {
+        console.log(info)
+        var $testContent = $('.js-test-content')
+        $testContent.html(info)
+        console.log(jqXHR)
+        console.log(textStatus)
+    }
+
+    function handleFormError(jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR)
+        console.log(textStatus)
+        console.log(errorThrown)
+    }
+})
