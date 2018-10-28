@@ -216,16 +216,21 @@ class UpdateItemsView(MoriSpaceView):
 
     # override form class to pass the required form for this function to work and the destination url as well
     form_class = ChecklistForm
+    target_url = 'includes/test_partial.html'
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
 
         if form.is_valid():
+            # save the form and submit the new item to the database
             item = form.save(commit=False)
             task_id = form.cleaned_data['task_id']
             item.save_item(task_id)
             items = Checklist.all_items()
+            # update context items to include the newly submited item before rendering
             self.context['items'] = items
-            html = render_to_string('includes/test_partial.html', self.context)
+            # create an updated html sting including the newly updated items
+            html = render_to_string(self.target_url, self.context)
+            # return the html string as success data to subimt form ajax call
             return HttpResponse(html)
         return render(request, self.template_name, self.context)
