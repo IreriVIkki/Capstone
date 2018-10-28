@@ -154,6 +154,10 @@ class Checklist(models.Model):
     class Meta:
         ordering = ['status']
 
+    @classmethod
+    def task_items(cls, task_id):
+        return cls.objects.filter(task=task_id)
+
     def save_item(self, task_id):
         task = Task.get_task(task_id)
         self.task = task

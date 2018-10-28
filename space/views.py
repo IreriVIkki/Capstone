@@ -12,82 +12,60 @@ import datetime
 from django.views.generic import TemplateView
 from .mixins import AjaxFormMixin
 
-
 # Create your views here.
 
 
-@csrf_protect
-def home(request):
-    data = {}
-    leaders = Profile.leader_board()
+class MoriSpaceView(AjaxFormMixin, TemplateView):
+    # setting up templates to be used
+    template_name = 'index.html'
+
+    # setting up forms to be displayed
     q_form = QuestionForm()
-    user = request.user
-    questions = Question.all_questions()
-    tasks = Task.all_tasks()
     item_f = ChecklistForm()
     answer_f = AnswerForm()
-    if request.method == 'POST':
-        answer_f = AnswerForm(request.POST)
-        if answer_f.is_valid():
-            answer = answer_f.save(commit=False)
-            query_id = answer_f.cleaned_data['query_id']
-            answer.save_answer(query_id, user)
 
-    if request.method == 'POST':
-        item_f = ChecklistForm(request.POST)
-        if item_f.is_valid():
-            item = item_f.save(commit=False)
-            task_id = item_f.cleaned_data['task_id']
+    # form_class = AnswerForm
+    tasks = Task.all_tasks()
+    items = Checklist.all_items()
+    leaders = Profile.leader_board()
+    questions = Question.all_questions()
+
+    # adding all that crap to the context object that will be rendered
+    context = {}
+    context['items'] = items
+    context['tasks'] = tasks
+    context['leaders'] = leaders
+    context['questions'] = questions
+    context['form'] = item_f
+
+    def get(self, request):
+        return render(request, self.template_name, self.context)
+
+
+class UpdateItemsView(MoriSpaceView):
+
+    # override form class to pass the required form for this function to work and the destination url as well
+    form_class = ChecklistForm
+    # use a partial template to render the updated information
+    target_url = 'includes/items_partial.html'
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        print('here')
+
+        if form.is_valid():
+            # save the form and submit the new item to the database
+            item = form.save(commit=False)
+            task_id = form.cleaned_data['task_id']
             item.save_item(task_id)
-            data['form_is_valid'] = True
-            tasks = Task.all_tasks()
-
-            data['items_update'] = render_to_string('includes/tasks_partial.html', {
-                'tasks': tasks
-            })
-            return JsonResponse(data)
-
-    # form adding a new question
-    if request.method == 'POST':
-        q_form = QuestionForm(request.POST)
-        if q_form.is_valid():
-            query = q_form.save(commit=False)
-            query.save_question(user)
-
-            data['form_is_valid'] = True
-
-            questions = Question.all_questions()
-
-            data['home_update'] = render_to_string('includes/all_questions_partial.html', {
-                'questions': questions
-            })
-            return JsonResponse(data)
-        else:
-            data['form_is_valid'] = False
-
-    if request.method == 'POST' and request.POST['status']:
-        item_id = request.POST['task_id']
-        print('here first', item_id)
-        item = Checklist.get_item(item_id)
-        item.complete_item()
-        data['form_is_valid'] = True
-        tasks = Task.all_tasks()
-
-        data['items_update'] = render_to_string('includes/tasks_partial.html', {
-            'tasks': tasks
-        })
-        return JsonResponse(data)
-    context = {
-        'csrf': csrf,
-        'user': user,
-        'tasks': tasks,
-        'item_f': item_f,
-        'leaders': leaders,
-        'q_form': q_form,
-        'questions': questions,
-        'answer_f': answer_f
-    }
-    return render(request, 'index.html', context)
+            task = Task.get_task(task_id)
+            # update context items to include the newly submited item before rendering
+            self.context['task'] = task
+            # create an updated html sting including the newly updated items
+            html = render_to_string(self.target_url, self.context)
+            # return the html string as success data to subimt form ajax call
+            return HttpResponse(html)
+        return render(request, self.template_name, self.context)
 
 
 def login(request):
@@ -183,55 +161,3 @@ def profile(request, user_id, username):
         'profile': profile
     }
     return render(request, 'profile.html', context)
-
-
-class MoriSpaceView(AjaxFormMixin, TemplateView):
-    # setting up templates to be used
-    template_name = 'profile.html'
-
-    # setting up forms to be displayed
-    q_form = QuestionForm()
-    item_f = ChecklistForm()
-    answer_f = AnswerForm()
-
-    # form_class = AnswerForm
-    tasks = Task.all_tasks()
-    items = Checklist.all_items()
-    leaders = Profile.leader_board()
-    questions = Question.all_questions()
-
-    # adding all that crap to the context object that will be rendered
-    context = {}
-    context['items'] = items
-    context['tasks'] = tasks
-    context['leaders'] = leaders
-    context['questions'] = questions
-    context['form'] = item_f
-
-    def get(self, request):
-        return render(request, self.template_name, self.context)
-
-
-class UpdateItemsView(MoriSpaceView):
-
-    # override form class to pass the required form for this function to work and the destination url as well
-    form_class = ChecklistForm
-    # use a partial template to render the updated information
-    target_url = 'includes/test_partial.html'
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-
-        if form.is_valid():
-            # save the form and submit the new item to the database
-            item = form.save(commit=False)
-            task_id = form.cleaned_data['task_id']
-            item.save_item(task_id)
-            items = Checklist.all_items()
-            # update context items to include the newly submited item before rendering
-            self.context['items'] = items
-            # create an updated html sting including the newly updated items
-            html = render_to_string(self.target_url, self.context)
-            # return the html string as success data to subimt form ajax call
-            return HttpResponse(html)
-        return render(request, self.template_name, self.context)

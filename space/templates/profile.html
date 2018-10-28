@@ -3,24 +3,8 @@
 
 
 {% block content %}
-{% for message in messages %}
-<label for="">{{ message }}</label>
-{% endfor %}
-<form data-url='http://localhost:8000/test_partial/' class='my-ajax-form' method='POST'>
-    {{form.as_p|safe}}
-    <button type='submit'>Submit</button>
-</form>
-
-<br><br>
-<div class="js-test-content">
-    <h1>results</h1>
-    {% for task in tasks %}
-    {{ task.task }}
-    <div>
-        {% for item in items %}
-        <label class="form-control" for="">{{ item.item }}</label>
-        {% endfor %}
-    </div>
-    {% endfor %}
+<div>
+    {% include 'includes/tasks_partial.html' %}
 </div>
+
 {% endblock content %}

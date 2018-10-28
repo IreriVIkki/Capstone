@@ -5,16 +5,15 @@ from . import views
 
 
 urlpatterns = [
-    url('^$', views.home, name='home'),
+    # authentication urls
     url(r'^login/$', views.login, name='login'),
     url(r'^logout/$', views.logout, name='logout'),
     url(r'^signup/$', views.signup, name='signup'),
+    # pages urls
+    url(r'morispace/$', views.MoriSpaceView.as_view(), name='home'),
     url(r'^userdetails/(\d+)/(\w+)/$', views.profile, name='profile'),
-    # url(r'^new/question/$', views.new_question, name='new_question'),
     url(r'^edit/profile/$', views.edit_profile, name='edit_profile'),
-    # url(r'^rate/post/(\d+)$', views.rate_website, name='rate_website'),
-    url(r'about/$', views.MoriSpaceView.as_view()),
-    url(r'test_partial/$', views.UpdateItemsView.as_view()),
+    url(r'new_item/$', views.UpdateItemsView.as_view(), name='new_item'),
 ]
 
 # this will help to serve uploaded images on the development server

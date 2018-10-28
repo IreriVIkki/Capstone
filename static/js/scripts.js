@@ -1,9 +1,11 @@
 $(document).ready(function () {
-    var $myForm = $('.my-ajax-form')
-    $myForm.submit(function (event) {
+    var $newItemForm = $('.js-new-item')
+
+    $newItemForm.submit(function (event) {
+        console.log('submited')
         event.preventDefault()
         var $formData = $(this).serialize()
-        var $thisURL = $myForm.attr('data-url') || window.location.href
+        var $thisURL = $newItemForm.attr('data-url') || window.location.href
         console.log($thisURL)
         $.ajax({
             method: "POST",
@@ -15,11 +17,9 @@ $(document).ready(function () {
     })
 
     function handleFormSuccess(info, textStatus, jqXHR) {
-        console.log(info)
-        var $testContent = $('.js-test-content')
+        var $testContent = $('.js_update_items')
         $testContent.html(info)
-        console.log(jqXHR)
-        console.log(textStatus)
+        console.log(info)
     }
 
     function handleFormError(jqXHR, textStatus, errorThrown) {
